@@ -3,6 +3,7 @@
 const CARROT_SIZE = 80;
 const CARROT_COUNT = 10;
 const BUG_COUNT = 10;
+const GAME_DURATION_SEC = 10;
 
 // 1
 const ground = document.querySelector(".ground");
@@ -21,7 +22,7 @@ let score = undefined;
 
 gameStartBtn.addEventListener('click', () => {
     if(started){
-        // stopGame();
+        stopGame();
     } else{
         startGame();
     }
@@ -32,6 +33,7 @@ function startGame(){
     initGame();
     showStopGame();
     showTimeAndScore();
+    startTimer();
 }
 
 function showStopGame(){
@@ -44,7 +46,27 @@ function showTimeAndScore(){
     gameScore.style.visibility = 'visible';
 }
 
-// 1. carrot, bug random Arrangement
+// 3. Start Timer
+
+function startTimer(){
+    let remainingTimeSec = GAME_DURATION_SEC;
+    updateTimeText(remainingTimeSec);
+    timer = setInterval(() => {
+        if(remainingTimeSec <= 0){
+            clearInterval(timer);
+            return;
+        }
+        updateTimeText(--remainingTimeSec);
+    }, 1000)
+}
+
+function updateTimeText(time){
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    gameTimer.innerText = `${minutes} : ${seconds}`
+}
+
+// 1. Carrot, Bug Random Arrangement
 
 function initGame(){
     ground.innerHTML = '';
