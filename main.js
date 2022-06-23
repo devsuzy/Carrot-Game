@@ -20,8 +20,8 @@ const popUpText = document.querySelector(".pop-text");
 const popUpReplayBtn = document.querySelector(".replay-btn");
 
 let started = false;
-let timer = 0;
-let score = undefined;
+let score = 0;
+let timer = undefined;
 
 // 2. Game Start
 
@@ -47,6 +47,13 @@ function stopGame(){
     stopTimer();
     hidestartGame();
     showPopUpAndText('replay❓');
+}
+
+// 5. finish Game
+
+function finishGame(win){
+    hidestartGame();
+    showPopUpAndText(win ? 'YOU WIN🎉`' : 'YOU LOSE💩')
 }
 
 // 2. Game Start - function
@@ -101,6 +108,42 @@ function initGame(){
     gameScore.innerHTML = CARROT_COUNT;
     addItem('carrot',CARROT_COUNT,'img/carrot.png');
     addItem('bug',BUG_COUNT,'img/bug.png');
+}
+
+// 5-1. Ground Event
+
+ground.addEventListener('click', onGroundClick);
+
+function onGroundClick(event){
+    if(!started){
+        return;
+    }
+    const target = event.target;
+    if(target.matches('.carrot')){
+        target.remove();
+        score++;
+        updateScoreBoard();
+        if(score === CARROT_COUNT){
+            finishGame(true);
+        }
+    } else if(target.matches('.bug')){
+        stopTimer();
+        finishGame(false);
+    }
+}
+function updateScoreBoard(){
+    gameScore.innerText = CARROT_COUNT - score;
+}
+
+// 5-2. PopUp Event
+
+popUpReplayBtn.addEventListener('click', () => {
+    startGame();
+    hidePopUp();
+})
+
+function hidePopUp(){
+    popUp.classList.add('hide')
 }
 
 // 1. Carrot, Bug Random Arrangement
