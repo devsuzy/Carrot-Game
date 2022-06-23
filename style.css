@@ -75,7 +75,7 @@ button{
     font-size: 50px;
     text-align: center;
     visibility: hidden;
-    line-height: 1em;
+    line-height: 1.1em;
 }
 .ground{
     position: relative;
