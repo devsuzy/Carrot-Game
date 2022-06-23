@@ -4,7 +4,7 @@ const CARROT_SIZE = 80;
 const CARROT_COUNT = 10;
 const BUG_COUNT = 10;
 
-// 1. carrot, bug random argement
+// 1. Carrot, Bug Random Arrangement
 
 const ground = document.querySelector(".ground");
 const groundRect = ground.getBoundingClientRect();
@@ -36,3 +36,5 @@ function randomNumber(min, max){
 }
 
 initGame();
+
+// 2. Game Start
