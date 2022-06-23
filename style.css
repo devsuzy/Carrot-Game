@@ -62,6 +62,7 @@ button{
     margin-top: 10px;
     text-align: center;
     visibility: hidden;
+    user-select: none;
 }
 .score{
     width: 70px;
@@ -76,6 +77,7 @@ button{
     text-align: center;
     visibility: hidden;
     line-height: 1.1em;
+    user-select: none;
 }
 .ground{
     position: relative;

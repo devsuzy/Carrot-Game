@@ -19,6 +19,13 @@ const popUp = document.querySelector(".pop");
 const popUpText = document.querySelector(".pop-text");
 const popUpReplayBtn = document.querySelector(".replay-btn");
 
+// 6
+const carrotSound = new Audio('./sound/carrot_pull.mp3')
+const BugSound = new Audio('./sound/bug_pull.mp3')
+const winSound = new Audio('./sound/game_win.mp3')
+const alertSound = new Audio('./sound/alert.wav')
+const bgSound = new Audio('./sound/bg.mp3')
+
 let started = false;
 let score = 0;
 let timer = undefined;
@@ -31,28 +38,40 @@ gameStartBtn.addEventListener('click', () => {
     } else{
         startGame();
     }
-    started = !started;
 })
 
 function startGame(){
+    started = true;
     initGame();
     showStopGame();
     showTimeAndScore();
     startTimer();
+    playSound(bgSound);
 }
 
 // 4. Game Stop
 
 function stopGame(){
+    started = false;
     stopTimer();
     hidestartGame();
     showPopUpAndText('replay❓');
+    playSound(alertSound);
+    stopSound(bgSound);
 }
 
 // 5. finish Game
 
 function finishGame(win){
+    started = false;
     hidestartGame();
+    if(win){
+        playSound(winSound)
+    } else{
+        playSound(BugSound)
+    }
+    stopTimer();
+    stopSound(bgSound);
     showPopUpAndText(win ? 'YOU WIN🎉`' : 'YOU LOSE💩')
 }
 
@@ -76,6 +95,7 @@ function startTimer(){
     timer = setInterval(() => {
         if(remainingTimeSec <= 0){
             clearInterval(timer);
+            finishGame(CARROT_COUNT === score)
             return;
         }
         updateTimeText(--remainingTimeSec);
@@ -104,6 +124,7 @@ function showPopUpAndText(text){
 // All. init
 
 function initGame(){
+    score = 0;
     ground.innerHTML = '';
     gameScore.innerHTML = CARROT_COUNT;
     addItem('carrot',CARROT_COUNT,'img/carrot.png');
@@ -122,12 +143,12 @@ function onGroundClick(event){
     if(target.matches('.carrot')){
         target.remove();
         score++;
+        playSound(carrotSound);
         updateScoreBoard();
         if(score === CARROT_COUNT){
             finishGame(true);
         }
     } else if(target.matches('.bug')){
-        stopTimer();
         finishGame(false);
     }
 }
@@ -135,11 +156,22 @@ function updateScoreBoard(){
     gameScore.innerText = CARROT_COUNT - score;
 }
 
+// 6. Audio Sound
+
+function playSound(sound){
+    sound.currentTime = 0;
+    sound.play();
+}
+function stopSound(sound){
+    sound.pause();
+}
+
 // 5-2. PopUp Event
 
 popUpReplayBtn.addEventListener('click', () => {
     startGame();
     hidePopUp();
+    gameStartBtn.style.visibility = 'visible';
 })
 
 function hidePopUp(){
