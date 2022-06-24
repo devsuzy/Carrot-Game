@@ -103,7 +103,7 @@ button{
     margin: 10px 0;
     font-size: 40px;
 }
-.pop.hide{
+.pop.pop-hide{
     display: none;
 }
 .replay-btn{
